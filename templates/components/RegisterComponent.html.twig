@@ -1,0 +1,43 @@
+<div {{ attributes.defaults(stimulus_controller('register', {
+    'site_key': google_recaptcha_site_key,
+    'hl': app.locale
+})) }}>
+    {{ form_start(form, {'attr' : {
+        'novalidate': true,
+        'data-action': 'live#action:prevent',
+        'data-live-action-param': 'save',
+    }}) }}
+    {{ form_row(form.name) }}
+
+    {{ form_row(form.surname) }}
+
+    {{ form_row(form.email) }}
+
+    <div class="mb-3">
+        {{ form_label(form.password.first, 'Password') }}
+        {{ form_widget(form.password.first) }}
+        {{ form_errors(form.password.first) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.password.second, 'Repeat Password') }}
+        {{ form_widget(form.password.second) }}
+        {{ form_errors(form.password.second) }}
+    </div>
+
+    <div id="recaptcha">
+        <div id="recaptcha-widget"></div>
+        <div
+            class="invalid-feedback {{ captchaErrorCodes | length > 0 ? 'd-block': '' }}"
+            {{ stimulus_target('recaptcha', 'error') }}
+        >
+            {{ captchaErrorCodes | join(',') }}
+        </div>
+    </div>
+
+    <button
+        type="submit"
+        class="my-2 btn btn-primary {{ this.hasValidationErrors ? 'disabled' : '' }}"
+    >Register</button>
+    {{ form_end(form) }}
+</div>
